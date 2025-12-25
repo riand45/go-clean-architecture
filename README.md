@@ -210,16 +210,50 @@ curl -X POST http://localhost:3000/api/v1/auth/logout \
 
 ## 🧪 Testing
 
+The project includes both unit tests and integration tests.
+
+### 1. Unit Tests
+Unit tests are fast and do not require any external dependencies like databases.
+
 ```bash
-# Run tests
+# Run all unit tests
 go test ./... -v
 
-# Run with coverage
-go test ./... -v -cover
+# Run unit tests for a specific module
+go test ./internal/modules/auth/tests/... -v
 
-# Run specific module tests
-go test ./internal/modules/auth/... -v
+# Run with coverage report
+go test ./... -v -cover
 ```
+
+### 2. Integration Tests
+Integration tests require running instances of PostgreSQL and Redis. They use the `integration` build tag.
+
+#### Prerequisites
+Ensure PostgreSQL and Redis are running (e.g., via Docker):
+```bash
+cd docker
+docker-compose up -d postgres redis
+```
+
+#### Running Integration Tests
+Integration tests connect to the test databases. You can override the connection strings using environment variables if needed.
+
+```bash
+# Run all tests including integration tests
+go test ./... -v -tags=integration
+
+# Run only integration tests
+go test ./internal/modules/auth/tests/integration/... -v -tags=integration
+
+# Custom connection strings (optional)
+# export TEST_DATABASE_URL="postgres://postgres:postgres@localhost:5432/dummy_event_test?sslmode=disable"
+# export TEST_REDIS_ADDR="localhost:6379"
+# go test ./... -v -tags=integration
+```
+
+> [!NOTE]
+> Integration tests will automatically create necessary tables and cleanup test data after execution.
 
 ## 📦 Building
 
