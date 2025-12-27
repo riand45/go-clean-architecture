@@ -1,5 +1,3 @@
-# Dummy Event - Auth Service
-
 A production-ready **Modular Monolith Clean Architecture** backend built with Go (Golang), designed for easy migration to microservices.
 
 ## 🏗️ Architecture
